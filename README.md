@@ -113,7 +113,7 @@ cd atm-project
 ```pip install -r requirements.txt```
 
 **4. Modeli Eğitin (Pipeline):**
-### Veriyi işler, modeli eğitir ve models/ klasörüne kaydeder
+***Veriyi işler, modeli eğitir ve models/ klasörüne kaydeder***
 ```python src/pipeline.py```
 
 **5. Uygulamayı Başlatın:**
