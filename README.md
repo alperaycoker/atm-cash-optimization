@@ -60,7 +60,7 @@ atm-project/
 
 ```
 
-### 📝 Proje Raporu & Teknik Detaylar
+## 📝 Proje Raporu & Teknik Detaylar
 
 **1. Problem Tanımı**
 ATM ağındaki nakit talebinin zaman serisi analizi ile tahmin edilmesi ve operasyonel maliyetlerin (faiz kaybı vs. lojistik maliyet) minimize edilmesi.
@@ -104,9 +104,9 @@ cd atm-project
 **2. Sanal Ortam Oluşturun (Opsiyonel ama önerilir):**
 
 ```python -m venv venv```
-# Windows için:
+***Windows için:***
 ```venv\Scripts\activate```
-# Mac/Linux için:
+***Mac/Linux için:***
 ```source venv/bin/activate```
 
 **3. Gereksinimleri Yükleyin:**
@@ -131,7 +131,7 @@ Proje Dockerize edilmiştir. Herhangi bir Python kurulumu yapmadan konteyner iç
 
 ```docker run -p 8501:8501 atm-app```
 
-**👥 İletişim**
+## 👥 İletişim
 
 Geliştirici: Alp Eray
 
