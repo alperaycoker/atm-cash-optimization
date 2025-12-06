@@ -97,7 +97,7 @@ Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları i
 **1. Repoyu Klonlayın:**
 
 ```
-git clone [atm-cash-optimization](https://github.com/alperaycoker/atm-cash-optimization)
+git clone https://github.com/alperaycoker/atm-cash-optimization
 cd atm-project
 ```
 
