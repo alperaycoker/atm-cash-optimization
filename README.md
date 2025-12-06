@@ -6,6 +6,10 @@
 ![Deployment](https://img.shields.io/badge/Deployment-Streamlit-red)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://atm-cash-optimization-alperay.streamlit.app/)
+
+> **🔴 Canlı Demo:** Projeyi tarayıcınızda denemek için [buraya tıklayın](https://atm-cash-optimization-alperay.streamlit.app/).
+
 ## 📸 Uygulama Önizleme
 > *Geliştirilen yapay zeka destekli karar destek sisteminin arayüzü:*
 
