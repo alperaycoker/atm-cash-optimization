@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Proje Dosyaları
+monitoring.db  # Veritabanını gönderme, script kendisi oluşturur
+*.DS_Store     # Mac kullanıyorsan gereksiz dosya
