@@ -136,4 +136,5 @@ Proje Dockerize edilmiştir. Herhangi bir Python kurulumu yapmadan konteyner iç
 Geliştirici: Alp Eray
 
 GitHub: [Profilim](https://github.com/alperaycoker)
+
 LinkedIn: [Profilim](https://linkedin.com/in/alperaycoker)
