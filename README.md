@@ -58,6 +58,8 @@ atm-project/
 ├── requirements.txt       # Proje Bağımlılıkları
 └── README.md              # Proje Dokümantasyonu
 
+```
+
 ## 📝 Proje Raporu & Teknik Detaylar
 
 **1. Problem Tanımı**
@@ -94,35 +96,28 @@ Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları i
 
 **1. Repoyu Klonlayın:**
 
-Bash
-
-git clone [GITHUB_REPO_LINKINIZ]
+```
+git clone [atm-cash-optimization](https://github.com/alperaycoker/atm-cash-optimization)
 cd atm-project
-2. Sanal Ortam Oluşturun (Opsiyonel ama önerilir):
-
-
 ```
-python -m venv venv
+
+**2. Sanal Ortam Oluşturun (Opsiyonel ama önerilir):**
+
+```python -m venv venv```
 # Windows için:
-venv\Scripts\activate
+```venv\Scripts\activate```
 # Mac/Linux için:
-source venv/bin/activate
-3. Gereksinimleri Yükleyin:
+```source venv/bin/activate```
 
-```
+**3. Gereksinimleri Yükleyin:**
+```pip install -r requirements.txt```
 
-pip install -r requirements.txt
-4. Modeli Eğitin (Pipeline):
+**4. Modeli Eğitin (Pipeline):**
+### Veriyi işler, modeli eğitir ve models/ klasörüne kaydeder
+```python src/pipeline.py```
 
-```
-
-# Veriyi işler, modeli eğitir ve models/ klasörüne kaydeder
-python src/pipeline.py
-5. Uygulamayı Başlatın:
-
-```
-
-streamlit run app.py
+**5. Uygulamayı Başlatın:**
+```streamlit run app.py```
 
 ## 🐳 Docker ile Çalıştırma
 
@@ -130,15 +125,11 @@ Proje Dockerize edilmiştir. Herhangi bir Python kurulumu yapmadan konteyner iç
 
 **1. İmajı Oluşturun:**
 
-```
-
-docker build -t atm-app .
+```docker build -t atm-app .```
 
 **2. Konteyneri Başlatın:**
 
-```
-
-docker run -p 8501:8501 atm-app
+```docker run -p 8501:8501 atm-app```
 
 **👥 İletişim**
 
