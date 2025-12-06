@@ -60,7 +60,7 @@ atm-project/
 
 ```
 
-## 📝 Proje Raporu & Teknik Detaylar
+### 📝 Proje Raporu & Teknik Detaylar
 
 **1. Problem Tanımı**
 ATM ağındaki nakit talebinin zaman serisi analizi ile tahmin edilmesi ve operasyonel maliyetlerin (faiz kaybı vs. lojistik maliyet) minimize edilmesi.
