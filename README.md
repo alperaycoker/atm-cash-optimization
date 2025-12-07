@@ -135,6 +135,11 @@ Proje Dockerize edilmiştir. Herhangi bir Python kurulumu yapmadan konteyner iç
 
 ```docker run -p 8501:8501 atm-app```
 
+## 📈 Veri Seti (Data Source)
+Projede Kaggle üzerinde yayınlanan ve 359 ATM'nin saatlik işlem verilerini içeren veri seti kullanılmıştır.
+* **Link:** [ATM Transactions Dataset](https://www.kaggle.com/datasets/yarenyilmaz/atm-transactions)
+* **Boyut:** ~60.000 işlem satırı.
+
 ## 👥 İletişim
 
 Geliştirici: Alp Eray
