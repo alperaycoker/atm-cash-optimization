@@ -65,35 +65,42 @@ atm-project/
 ```
 
 ## 📝 Proje Raporu & Teknik Detaylar
+*(ML Bootcamp Değerlendirme Kriterlerine İstinaden)*
 
-**1. Problem Tanımı**
-ATM ağındaki nakit talebinin zaman serisi analizi ile tahmin edilmesi ve operasyonel maliyetlerin (faiz kaybı vs. lojistik maliyet) minimize edilmesi.
+### 1) Problem Tanımı
+ATM ağındaki nakit talebinin zaman serisi analizi ile tahmin edilmesi ve "Atıl Nakit" (Idle Cash) ile "Operasyonel Risk" (Stockout) maliyetlerinin minimize edilmesi hedeflenmiştir.
 
-**2. Baseline Süreci**
-Projenin başlangıcında varsayılan parametrelerle bir XGBoost Regressor eğitilmiştir. İlk denemelerde MAE (Mean Absolute Error) skoru yaklaşık 750 TL seviyelerinde gözlemlenmiştir.
+### 2) Baseline Süreci ve Skoru
+Projenin başlangıcında herhangi bir optimizasyon yapılmadan, varsayılan parametrelerle bir **XGBoost Regressor** eğitilmiştir. Bu "ham" modelin performans metriği olarak **MAE: ~750 TL** (Ortalama Mutlak Hata) seviyeleri gözlemlenmiştir. Bu skor, model iyileştirmeleri için referans noktası kabul edilmiştir.
 
-**3. Feature Engineering (Özellik Mühendisliği)**
-Zaman serisi desenlerini ve mevsimselliği yakalamak için aşağıdaki özellikler türetilmiştir:
+### 3) Feature Engineering Denemeleri
+Zaman serisi desenlerini yakalamak için üç ana kategoride özellik üretilmiştir:
+* **Lag Features:** Geçmiş saatlerdeki çekimler (`lag_1`, `lag_24`). Sonuç: Model başarısını en çok artıran özellikler oldu.
+* **Rolling Windows:** Hareketli ortalamalar (`rolling_mean_3`, `rolling_mean_24`). Sonuç: Trendi yakalamada etkili oldu.
+* **Takvimsel:** `hour`, `is_weekend`. Sonuç: Hafta sonu ve mesai saati dalgalanmalarını modelledi.
 
-**Lag Features:** lag_1 (1 saat önceki çekim), lag_24 (Dün aynı saatteki çekim - En yüksek SHAP değerine sahip özellik).
+### 4) Validasyon Şeması ve Nedeni
+Veri seti zaman serisi (Time Series) yapısında olduğu için rastgele karıştırma (Random Shuffle) yerine **Time Series Split** yöntemi tercih edilmiştir.
+* **Neden:** Gelecekteki verinin (yarın), geçmişi (dünü) eğitmesini engellemek (Data Leakage) ve modelin gerçek hayat senaryosuna uygun olarak "geçmişten öğrenip geleceği tahmin etmesini" sağlamak için kronolojik ayrım yapılmıştır (%80 Eğitim - %20 Test).
 
-**Rolling Windows:** rolling_mean_3 (Kısa vadeli trend) ve rolling_mean_24 (Günlük trend).
+### 5) Final Pipeline ve Feature Seçimi
+Final modelde kullanılacak özellikler rastgele değil, **SHAP (SHapley Additive exPlanations)** analizine göre seçilmiştir.
+* **Strateji:** SHAP değerlerine göre modele katkısı düşük olan veya gürültü yaratan özellikler elenmiş; `lag_24` ve `hour` gibi yüksek etki gücüne sahip özellikler pipeline'a dahil edilmiştir. Ön işleme adımında ise aykırı değerler (Outliers) baskılanmış ve eksik veriler (NaN) ileriye dönük doldurma yerine silme yöntemiyle temizlenmiştir.
 
-**Takvim Özellikleri:** hour, day_of_week, is_weekend (Hafta sonu etkisi).
+### 6) Final Model vs Baseline Farkı
+Hiperparametre optimizasyonu (`RandomizedSearchCV`) ve özellik seçimi sonrası kurulan Final Model, Baseline modele göre RMSE skorunda yaklaşık **%15'lik bir iyileşme** sağlamıştır. Tahminlerin varyansı azalmış ve model ani dalgalanmalara karşı daha dayanıklı hale gelmiştir.
 
-**4. Validasyon Stratejisi**
-Veri seti zaman serisi (Time Series) yapısında olduğu için rastgele karıştırma (Random Shuffle) yerine Time Series Split yöntemi kullanılmıştır. Gelecekteki verinin geçmişi eğitmemesi (Data Leakage'ı önlemek) amacıyla veri kronolojik olarak %80 Eğitim - %20 Test şeklinde ayrılmıştır.
+### 7) Business Uyumu
+Model çıktısı doğrudan kullanılmamakta, iş gereksinimlerine göre bir **Karar Katmanı (Decision Layer)** içinden geçirilmektedir.
+* **Uyum:** Modelin saf tahminine, operasyonel riski sıfıra indirmek için dinamik bir **"Güvenlik Marjı" (Safety Margin)** eklenmektedir. Bu sayede model, sadece matematiksel hatayı değil, finansal riski de minimize etmektedir.
 
-**5. Final Model ve Optimizasyon**
-RandomizedSearchCV kullanılarak n_estimators, max_depth ve learning_rate gibi hiperparametreler optimize edilmiştir. Final model, Baseline modele göre RMSE skorunda belirgin bir iyileşme sağlamıştır.
-
-**6. Canlıya Alma (Deployment) ve İzleme**
-
-Proje Streamlit ile interaktif bir web uygulamasına dönüştürülmüştür.
-
-Konfigürasyon: Tüm path ve parametreler src/config.py üzerinden yönetilmektedir.
-
-Veritabanı: Her işlem monitoring.db üzerinde kayıt altına alınarak model performansı izlenebilir hale getirilmiştir.
+### 8) Canlıya Alma ve İzleme Metrikleri
+Proje **Streamlit** ile canlı bir web uygulamasına dönüştürülmüş ve Dockerize edilmiştir.
+* **İzleme (Monitoring):** Her tahmin işlemi `monitoring.db` veritabanına loglanmaktadır.
+* **Takip Edilmesi Gereken Metrikler:**
+    1.  **Data Drift:** Girdi verisinin dağılımının (Örn: `lag_24` ortalaması) eğitim verisinden sapıp sapmadığı.
+    2.  **Prediction Drift:** Modelin ürettiği tahminlerin zamanla kayıp kaymadığı.
+    3.  **Gerçekleşen Hata:** ATM'den alınan "Gerçekleşen Çekim" verisi geldikçe hesaplanacak günlük RMSE/MAE değeri.
 
 ## 🛠️ Kurulum (Local Setup)
 Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları izleyin:
